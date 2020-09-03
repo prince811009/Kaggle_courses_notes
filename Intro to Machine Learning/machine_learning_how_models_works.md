@@ -23,7 +23,7 @@
 >For simplicity, we'll start with the simplest possible decision tree.
 簡單起見, 我們將從最簡單的決策樹開始.
 
-![Sample Decision Tree]([s_notes/imgs/sample_decision_t/Kaggle_courseree.png](https://github.com/prince811009/Kaggle_courses_notes/blob/master/imgs/sample_decision_tree.png) "Sample Decision Tree")
+![Sample Decision Tree](https://github.com/prince811009/Kaggle_courses_notes/blob/master/imgs/sample_decision_tree.png)
 
 >It divides houses into only two categories. The predicted price for any house under consideration is the historical average price of houses in the same category.
 
