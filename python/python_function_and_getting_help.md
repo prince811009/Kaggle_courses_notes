@@ -17,6 +17,8 @@
 
 ```python
 help(round)
+
+
 # Help on built-in function round in module builtins:
 
 # round(...)
@@ -49,6 +51,8 @@ Python 從裡到外會評估出這樣的表達式, 首先, 他會先計算出 `r
 
 ```python
 help(print)
+
+
 # Help on built-in function print in module builtins:
 
 # print(...)
@@ -90,6 +94,7 @@ def least_difference(a, b, c):
     diff3 = abs(a - c)
     return min(diff1, diff2, diff3)
 
+
 print(
     least_difference(1, 10, 100),
     least_difference(1, 10, 10),
@@ -102,6 +107,8 @@ print(
 
 ```python
 help(least_difference)
+
+
 # Help on function least_difference in module __main__:
 
 # least_difference(a, b, c)
@@ -130,6 +137,8 @@ Docstring 是包在一個三個雙引號裡面的字串, ( 可能多行 ), 並�
 
 ```python
 help(least_difference)
+
+
 # Help on function least_difference in module __main__:
 
 # least_difference(a, b, c)
@@ -158,11 +167,14 @@ def least_difference(a, b, c):
     diff3 = abs(a - c)
     min(diff1, diff2, diff3)
     
+
 print(
     least_difference(1, 10, 100),
     least_difference(1, 10, 10),
     least_difference(5, 6, 7),
 )
+
+
 # None None None
 ```
 
@@ -173,6 +185,8 @@ Python 允許我們定義像這樣的 function, 調用他們的結果是一個�
 ```python
 mystery = print()
 print(mystry)
+
+
 # None
 ```
 
@@ -181,6 +195,8 @@ print(mystry)
 
 ```python
 print(1, 2, 3, sep=' < ')
+
+
 # 1 < 2 < 3
 ```
 
@@ -188,6 +204,8 @@ print(1, 2, 3, sep=' < ')
 
 ```python
 print(1, 2, 3)
+
+
 # 1 2 3
 ```
 
@@ -196,6 +214,7 @@ print(1, 2, 3)
 ```python
 def greet(who="Colin"):
     print("Hello, ", who)
+
 
 greet()
 greet(who="Kaggle")
@@ -218,11 +237,14 @@ def squared_call(fn, arg):
     """Call fn on the result of calling fn on arg"""
     return fn(fn(arg))
 
+
 print(
     call(mult_by_five, 1),
     squared_call(mult_by_five, 1),
     sep='\n', # '\n' is the newline character - it starts a new line 換行
 )
+
+
 # 5
 # 25
 ```
@@ -237,6 +259,7 @@ print(
 def mod_5(x):
     """Return the remainder of x after dividing by 5. 回傳除以五之後的餘數"""
     return x % 5
+
 
 print(
     'Which number is biggest?',
