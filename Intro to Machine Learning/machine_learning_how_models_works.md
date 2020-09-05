@@ -46,7 +46,7 @@
 
 以下兩種決策樹中的哪個更有可能是從擬和真實房地產的 training data 產生的呢？
 
-![Improving the Decision Tree-1](https://github.com/prince811009/Kaggle_courses_notes/blob/master/imgs/sample_decision_tree.png)
+![Improving the Decision Tree-1](https://github.com/prince811009/Kaggle_courses_notes/blob/master/imgs/decision_tree.png)
 
 >The decision tree on the left (Decision Tree 1) probably makes more sense, because it captures the reality that houses with more bedrooms tend to sell at higher prices than houses with fewer bedrooms. The biggest shortcoming of this model is that it doesn't capture most factors affecting home price, like number of bathrooms, lot size, location, etc.
 
@@ -56,7 +56,7 @@
 
 我們可以利用更多分支的決策樹獲得更多事實, 這些被稱為更深層的樹. 而有考慮到每個房屋總面積的決策樹可能會像這樣:
 
-![Improving the Decision Tree-2](https://github.com/prince811009/Kaggle_courses_notes/blob/master/imgs/sample_decision_tree.png)
+![Improving the Decision Tree-2](https://github.com/prince811009/Kaggle_courses_notes/blob/master/imgs/decision_tree_2.png)
 
 >You predict the price of any house by tracing through the decision tree, always picking the path corresponding to that house's characteristics. The predicted price for the house is at the bottom of the tree. The point at the bottom where we make a prediction is called a leaf.
 
