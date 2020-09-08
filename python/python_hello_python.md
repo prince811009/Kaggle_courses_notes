@@ -1,4 +1,4 @@
-# Python
+# Hello Python
 ## Intro
 >This course covers the key Python skills you'll need so you can start using Python for data science.
 

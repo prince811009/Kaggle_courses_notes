@@ -1,4 +1,4 @@
-# Python
+# Function and Getting help
 ## Intro
 >You've already seen and used functions such as print and abs. But Python has many more functions, and defining your own functions is a big part of python programming.
 
