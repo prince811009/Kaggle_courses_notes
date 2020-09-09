@@ -557,3 +557,115 @@ rolls + 10
 
 # array([14, 11, 12, 12, 11, 13, 11, 11, 15, 12])
 ```
+
+我們可能認為 Python 嚴格規定了其核心語法的方式, 例如 `+`, `<`, `in`, `==` 或用於 indexing 和 slicing 的方括號, 但實際上, 這其實是很輕鬆的方法. 當我們定義一個新的類型時, 我們可以選擇要對他多加哪些做法, 或該類型的對像等同於其他對象的含義.
+
+list 的設計者決定不允許將它們添加到數字中, `numpy` arrays 的設計者則採用了不同的方式 ( 將數字加到數組的每個元素中).
+
+下面是一些有關 `numpy` arrays 如何與 Python 運算符進行未預期中的互動意外交互 ( 或至少不同於 list) 的範例.
+
+```python
+# At which indices are the dice less than or equal to 3?
+rolls <= 3
+
+# array([False,  True,  True,  True,  True,  True,  True,  True, False,
+#         True])
+```
+
+
+```python
+xlist = [[1,2,3],[2,4,6],]
+# Create a 2-dimensional array
+x = numpy.asarray(xlist)
+print("xlist = {}\nx =\n{}".format(xlist, x))
+
+
+# xlist = [[1, 2, 3], [2, 4, 6]]
+# x =
+# [[1 2 3]
+#  [2 4 6]]
+```
+
+
+```python
+# Get the last element of the second row of our numpy array
+x[1, -1]
+
+
+# 6
+```
+
+
+```python
+# Get the last element of the second sublist of our nested list?
+xlist[1, -1]
+
+
+# ---------------------------------------------------------------------------
+# TypeError                                 Traceback (most recent call last)
+# <ipython-input-25-e2f4c7f35788> in <module>
+#       1 # Get the last element of the second sublist of our nested list?
+# ----> 2 xlist[1,-1]
+
+# TypeError: list indices must be integers or slices, not tuple
+```
+
+numpy 的 `ndarray` 類型專門用於處理多維數據, 因此它定義了自己索引的邏輯, 使我們可以透過 tuple 進行索, 以便在每個維度上指定索引.
+
+#### When does 1 + 1 not equal 2?
+
+更奇怪的是, 我們可能已經聽過 ( 或甚至使用過 ) tensorflow, 這是一個廣泛用於深度學習的 Python 的 library, 它也廣泛使用於運算符的重載.
+
+```python
+import tensorflow as tf
+# Create two constants, each with value 1
+a = tf.constant(1)
+b = tf.constant(1)
+# Add them together to get...
+a + b
+
+
+# <tf.Tensor 'add:0' shape=() dtype=int32>
+```
+
+結果 `a + b` 得出的結果不是 2, 而是 ( 引用 tensorflow 的文檔 )...
+
+>a symbolic handle to one of the outputs of an Operation. It does not hold the values of that operation's output, but instead provides a means of computing those values in a TensorFlow tf.Session.
+
+(`Operation` 輸出的其中之一的符號, 他不保存這個 operator 的輸出, 而是提供一種在 TensorFlow `tf.Session` 中計算這些值的方法.)
+
+
+重要的是我們需要注意到以下的事實: 這類的事情是可能發生的, libraries 會經常以不是很顯而易見的或神奇的方式使用運算符號重載 (operator overloading).
+
+理解了 Python 的運算符號如何應用於 ints, strings, and lists, 並不保證我們也可以立即了解將其應用於 tensorflow `Tensor` 會如何運作, 或是 numpy 的 `ndarray` 或 pandas 的 `DataFrame`.
+
+不過例如我們一旦對 `DataFrames` 有些了解之後, 像是下面這樣的表達式便會看起來很直觀:
+
+
+```python
+# Get the rows with population over 1m in South America
+df[(df['population'] > 10**6) & (df['continent'] == 'South America')]
+```
+
+不過為什麼這樣行得通呢? 上面的範例具有 5 種不同的 overloaded operators. 這些操作分別在做什麼? 當事情開始出錯的時候, 這有助於我們知道答案.
+
+#### Curious how it all works?
+
+請問是否曾經在 object 上調用過 `help()` 或 `dir()`, 並且想知道所有帶有雙個下底線的名稱到底是什麼呢?
+
+```python
+print(diir(list))
+
+
+# ['__add__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__iadd__', '__imul__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__rmul__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
+```
+
+事實證明, 這與 operator overloading 有直接相關.
+
+當 Python 工程師想要去定義 operator 對於它們的型態會有什麼行為時, 他們通過開頭和結尾有 2 個下底線的特殊名稱 ( 例如 `__lt__`, `__setattr__` 或 `__contains__`) 的方法來實現. 通常, 遵循這種雙個下底線格式的名稱在 Python 中具有特殊含義.
+
+因此, 例如 `x in [1、2、3]` 這個表達式 實際上是在後台調用 list 的方法 `__contains__`, 這方法等同於 (或更難看 ) `[1、2、3].__contains__(x).
+
+如果我們想了解更多, 可以閱讀 [官方文檔](https://docs.python.org/3.4/reference/datamodel.html#special-method-names), 文件中描述了更多其他特殊的 "下底線" 的方法.
+
+在這些課程中, 我們不會定義自己的類型 ( 除非我們有時間的話 ), 但希望我們以後能體驗定義自己的奇妙類型的樂趣.
